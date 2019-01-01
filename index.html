@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- #region -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SnipVipp</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto" rel="stylesheet">  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <!-- #endregion -->
+</head>
+<body>
+  <div class="container">
+    <div class="header third">
+      <span id="logo"><strong>Snip</strong><span id="light">Vipp</span></span>
+      <button>How to</button>
+      <div class="hidden-info third">
+        <ol>
+          <li>Write your triggers in the abbreviation box</li>
+          <li>Write how your expansion should be typed</li>
+          <li>Use | (pipe symbol) where you want your cursor to be placed after the snippet has been pasted</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="content" id="root">
+      <div class="user-input">
+        <label>
+          Abbreviation/Trigger: <br>
+          <input
+            v-on:keydown.prevent.space
+            v-on:keydown.prevent.ctrl.enter="addToYourSnippets"
+            type="text"
+            id="trigger"
+            v-model:value="trigger" />
+        </label>
+
+
+        <label>
+          Expansion: <br>
+          <textarea 
+            id="expansion"
+            v-on:keydown.ctrl.enter.prevent="addToYourSnippets"
+            v-on:keydown.prevent.tab="insertTab($event)"
+            v-model:value="expansion"></textarea>
+        </label>
+
+        <button class="fourth" v-on:click="addToYourSnippets">
+          Add To Your Snippets  
+          <i class="fas fa-plus-circle fa-lg"></i>
+        </button>
+      </div>
+      <div class="display-output">
+        <p>
+          <strong>Snippet:</strong>
+        </p>
+        <div class="primary">
+          {{ isAnyFieldEmpty ? "NO SNIPPET" : snippet  | limitText }}
+          <button
+            class="fourth"
+            title="copy this snippet"
+            v-on:click="copySnippet">
+            <i class="far fa-copy fa-lg"></i>
+          </button>
+        </div>
+
+        <h4>Your Snippets: </h4>
+        <p v-if="yourSnippets.length === 0"> Empty </p>
+        <ul class="your-snippets">
+          <li
+            v-bind:title="yourSnippet"
+            class="primary" 
+            v-for="yourSnippet in yourSnippets">
+            {{ yourSnippet | limitText(40) }}
+          </li>
+        </ul>
+
+        <button
+          class="fourth"
+          title="Copy All Snippets"
+          v-on:click="copyAllYourSnippets"
+          id="copy-all" >
+          <i class="far fa-copy fa-lg"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/vue.js"></script>
+  <script src="js/root.js"></script>
+</body>
+</html>
