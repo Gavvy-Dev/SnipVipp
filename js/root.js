@@ -8,17 +8,14 @@ let root = new Vue({
   computed: {
     snippet() {
       let snippet = this.trigger.trim() + "=";
-      let currChar = "";
       const replaceChars = {
         "\n" : "\\n"     ,
         "\t" : "\\t"     ,
         "|"  : "%cursor%",
         "%"  : "{pc}"
       };
-      for (let i = 0, len = this.expansion.length; i < len; ++i) {
-        currChar = this.expansion.charAt(i);
-        snippet += replaceChars[currChar] || currChar;
-      }
+      for (let c of this.expansion)
+        snippet += replaceChars[c] || c;
 
       return snippet;
     },
