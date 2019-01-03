@@ -9,24 +9,15 @@ let root = new Vue({
     snippet() {
       let snippet = this.trigger.trim() + "=";
       let currChar = "";
+      const replaceChars = {
+        "\n" : "\\n"     ,
+        "\t" : "\\t"     ,
+        "|"  : "%cursor%",
+        "%"  : "{pc}"
+      };
       for (let i = 0, len = this.expansion.length; i < len; ++i) {
         currChar = this.expansion.charAt(i);
-        switch (currChar) {
-          case "\n":
-            snippet += "\\n";
-            break;
-          case "\t":
-            snippet += "\\t";
-            break;
-          case "|":
-            snippet += "%cursor%";
-            break;
-          case "%":
-            snippet += "{pc}";
-            break;
-          default:
-            snippet += currChar;
-        }
+        snippet += replaceChars[currChar] || currChar;
       }
 
       return snippet;
